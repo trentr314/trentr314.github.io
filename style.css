@@ -1,0 +1,134 @@
+/* TODO: CSS Lint, look for accidental redundancies */
+
+.description {
+  list-style-type: none;
+  margin-left: 30px; 
+}
+li {
+  list-style-type: circle;
+
+}
+
+.section_box {
+  display: table;
+  background-color: rgba(105,105,105,0.95);
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.center_title {
+  color: white;
+  text-indent: 30px;
+  font-size: 40px;
+}
+
+
+a {
+  color: white;
+  padding: 10px;
+}
+/***********************  is this inheritance trick too much of a bandaid?************/
+.project a {
+  padding: inherit;
+}
+#UTD {
+  color: white;
+  padding: none;
+}
+
+.project {
+  padding: none;
+}
+
+
+* {
+  font-family: "Trebuchet MS", sans-serif;
+  color: white;
+}
+
+#paper {
+  font-size: 80px;
+  margin: 0;
+  padding: 0;
+  line-height: 80%;
+}
+.resume {
+  border-radius: 5px;
+  padding: 10px;
+  color: black;
+}
+
+
+#resume_link {
+  position: relative;
+  left: -12px; /* makes the SVG icon fit in with the other image links */
+}
+
+
+#resumetitle {
+  margin: 0;
+  padding: 0;
+  color: white;
+}
+
+.resume {
+  display: table;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+
+.tools {
+  display: flex;
+}
+#profilephoto {
+  height: 150px;
+  border: 10px solid white;
+  border-radius: 50%;
+}
+#top {
+  display: flex;
+}
+#name {
+  font-size: 60px;
+  margin-bottom: 0;
+  margin-left: 15px;
+  margin-top: 10px;
+  color: white;
+}
+
+
+#job_title {
+  margin-top: 0;
+  margin-left: 20px;
+  margin-bottom: 10px;
+  font-size: 15px;
+  color: white;
+}
+h4 {
+  color: white;
+}
+#degree {
+  font-size: 20px;
+  color: white;
+  margin-top: 0;
+  margin-left: 20px;
+}
+
+#contact {
+  font-size: 20px;
+}
+
+
+.project_title {
+  display: block; /*********** only way to indent anchor ********/
+  text-indent: 30px;
+  color: white;
+}
+
+
+body {
+  background-image: url('images/shutterstock_515619283.jpg');
+  background-size: 100%;
+  background-attachment: fixed;
+}
