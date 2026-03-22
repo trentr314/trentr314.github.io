@@ -1,0 +1,161 @@
+{
+  "header": {
+    "name": "Trent Rogers",
+    "contact": {
+      "linkedin": "https://linkedin.com/in/trentrogers314",
+      "website": "https://trentrogers.com",
+      "github": "https://github.com/trentr314"
+    },
+    "summary": "Software engineer with a dual background in Cognitive Science (AI/neuroscience concentrations) and Computer Science, and 2+ years of experience developing, debugging, and modernizing robust C++ and Python systems for high-stakes environments (FAA). Experience with automation, data-driven problem-solving, and rapid adaptation to complex technical systems. BlueDot Impact alumni (AGI Strategy) and CRS S-Risk Introductory Fellow. Deeply interested in understanding how complex/intelligent information systems work internally."
+  },
+  "education": [
+    {
+      "level": "Graduate",
+      "degree": "Graduate Certificate in Data Science",
+      "status": "In Progress",
+      "institution": "Harvard Extension School",
+      "dates": "2024–Present",
+      "details": [
+        "Foundations of Data Science and Engineering (CSCI E-101) – Grade: A",
+        "Mathematical Statistics (MATH E-156) – Grade: A"
+      ]
+    },
+    {
+      "level": "Undergraduate",
+      "degree": "B.S. in Cognitive Science and Computer Science",
+      "gpa": "3.50",
+      "major": "",
+      "institution": "University of Texas at Dallas",
+      "dates": "2022",
+      "details": [
+        "Academic Excellence Scholarship recipient"
+      ]
+    },
+    {
+      "level": "Undergraduate",
+      "degree": "A.S. in Biology",
+      "gpa": "3.78",
+      "institution": "Oklahoma City Community College",
+      "dates": "2017",
+      "details": []
+    }
+  ],
+  "selectedPrograms": [
+    {
+      "degree": "S-Risk Introductory Fellow",
+      "institution": "Center for Reducing Suffering",
+      "dates": "February–March 2026"
+    },
+    {
+      "degree": "BlueDot Impact — AGI Strategy",
+      "institution": "",
+      "dates": "January–February 2026"
+    }
+  ],
+  "skills": [
+    "Python (Pandas, NumPy)",
+    "C++",
+    "AI-Assisted Development",
+    "Docker",
+    "SQL",
+    "EDA",
+    "Bash Scripting",
+    "Linux (RHEL/Ubuntu)",
+    "PowerShell",
+    "Git/Bitbucket",
+    "Jira (SAFe Agile)",
+    "Technical Documentation"
+  ],
+  "experience": [
+    {
+      "company": "Leidos",
+      "title": "Software Engineer (FAA contract)",
+      "dates": "March 2026 - Present",
+      "bullets": [
+        {
+          "text": "Continued support for FAA long-range radar contract following contract transition",
+          "keywords": ["faa", "radar", "contract-transition"]
+        }
+      ]
+    },
+    {
+      "company": "JMA Solutions",
+      "title": "Software Engineer (FAA contract)",
+      "dates": "December 2023 - March 2026",
+      "bullets": [
+        {
+          "text": "Active U.S. Secret security clearance",
+          "keywords": ["security-clearance"]
+        },
+        {
+          "text": "Engineered automated cybersecurity hardening solutions with granular Python and PowerShell scripts, ensuring compliance while preserving critical functionality in operational infrastructure",
+          "keywords": ["python", "powershell", "automation", "cybersecurity", "scripting"]
+        },
+        {
+          "text": "Performed data analysis with Python/Pandas to identify statistical baselines from historical sensor data, to establish robust equipment fault thresholds while reducing nuisance alerts",
+          "keywords": ["python", "pandas", "data-analysis", "statistics"]
+        },
+        {
+          "text": "Led infrastructure modernization project to containerize legacy C++ monitoring application into Docker containers on modern RHEL server",
+          "keywords": ["c++", "docker", "containerization", "linux", "rhel", "modernization"]
+        },
+        {
+          "text": "Analyzed and debugged complex virtualization, networking, and inter-process communication issues across environments (Windows, RHEL, Docker), including custom packet capture and regex-based parsing of proprietary network traffic",
+          "keywords": ["debugging", "networking", "docker", "linux", "windows", "regex", "packet-capture"]
+        },
+        {
+          "text": "Authored comprehensive technical documentation and test procedures/reports for safety-critical systems, ensuring compliance with engineering standards and traceability requirements",
+          "keywords": ["documentation", "technical-writing", "testing"]
+        },
+        {
+          "text": "Worked within SAFe Agile framework using Jira and Git/Bitbucket, regularly presenting project accomplishments to diverse stakeholders (DHS, DoD, FAA)",
+          "keywords": ["agile", "jira", "git", "presentation", "stakeholder-management"]
+        }
+      ]
+    },
+    {
+      "company": "Provalus",
+      "roles": [
+        {
+          "title": "SOC (Security Operations Center) Analyst",
+          "dates": "June 2023 – September 2023",
+          "bullets": [
+            {
+              "text": "Rapidly adapted to a complex technical environment within a compressed training schedule, producing thorough investigative documentation that enabled specialized cross-functional teams to act on clear, concise findings.",
+              "keywords": ["adaptability", "documentation", "cross-functional"]
+            },
+            {
+              "text": "Analyzed system and firewall log data to identify anomalous network activity, investigating patterns such as unusual data transfers to trace sources and assess risk.",
+              "keywords": ["data-analysis", "log-analysis", "investigation"]
+            },
+            {
+              "text": "Investigated, documented, and resolved or escalated over 350 cybersecurity incidents, in addition to evaluating and classifying hundreds of user-reported emails.",
+              "keywords": ["incident-response", "cybersecurity", "volume"]
+            }
+          ]
+        },
+        {
+          "title": "Salesforce Developer Training Program",
+          "dates": "February 2023 – June 2023",
+          "bullets": [
+            {
+              "text": "Successfully completed training program, quickly earning Salesforce Administrator certification with no prior experience.",
+              "keywords": ["salesforce", "certification", "training"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "company": "University of Oklahoma Health Sciences Center",
+      "title": "Undergraduate Researcher",
+      "dates": "May 2017 - July 2017",
+      "bullets": [
+        {
+          "text": "Used western blots to isolate proteins involved in diabetic retinopathy from mouse retinas and recorded the data, as well as cared for the mice",
+          "keywords": ["research", "biology", "protein-analysis", "laboratory", "data-collection"]
+        }
+      ]
+    }
+  ]
+}

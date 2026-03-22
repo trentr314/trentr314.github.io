@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Resume Generator | Trent Rogers</title>
+    <meta name="description" content="Auto-shrink resume generator by Trent Rogers" />
+    <link rel="icon" type="image/png" href="favicon.png">
+
+    <!-- Google Fonts - Nunito -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- pdfmake -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+
+    <style>
+      :root {
+        --primary-bg: #121820;
+        --accent-cyan: #00cbff;
+        --accent-teal: #00d4c6;
+        --text-light: #d6d6d6;
+        --text-white: #ffffff;
+        --border-light: rgba(214, 214, 214, 0.2);
+        --font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        --spacing-sm: 1rem;
+        --spacing-md: 1.5rem;
+        --spacing-lg: 2rem;
+        --spacing-xl: 3rem;
+        --spacing-2xl: 4rem;
+        --radius-sm: 0.5rem;
+        --radius-md: 1rem;
+        --radius-lg: 1.5rem;
+      }
+
+      html {
+        overflow-y: scroll;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: var(--font-family);
+        font-size: 1.125rem;
+        line-height: 1.75;
+        color: var(--text-light);
+        background:
+          linear-gradient(rgba(18, 24, 32, 0.99), rgba(18, 24, 32, 0.99)),
+          url('prev-nanobananapro_cropped.png') center / cover no-repeat fixed;
+        background-color: var(--primary-bg);
+        overflow-wrap: break-word;
+      }
+
+      .container {
+        width: 100%;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 0 var(--spacing-lg);
+      }
+
+      .back-link {
+        display: inline-block;
+        color: var(--accent-cyan);
+        text-decoration: none;
+        margin-top: var(--spacing-lg);
+        margin-bottom: var(--spacing-md);
+        transition: color 0.2s ease;
+      }
+
+      .back-link:hover {
+        color: var(--accent-teal);
+      }
+
+      .article-header {
+        margin-bottom: var(--spacing-xl);
+        padding-bottom: var(--spacing-lg);
+        border-bottom: 1px solid var(--border-light);
+      }
+
+      .article-title {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: var(--text-white);
+        letter-spacing: -0.03em;
+        line-height: 1.2;
+        margin-bottom: var(--spacing-sm);
+      }
+
+      .article-meta {
+        font-size: 0.95rem;
+        color: var(--text-light);
+        opacity: 0.7;
+        font-style: italic;
+      }
+
+      .article-content {
+        padding-bottom: var(--spacing-2xl);
+      }
+
+      .article-content p {
+        margin-bottom: var(--spacing-md);
+      }
+
+      .article-content h2 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--text-white);
+        margin-top: var(--spacing-xl);
+        margin-bottom: var(--spacing-sm);
+      }
+
+      /* Generate button */
+      .btn-generate {
+        display: inline-block;
+        padding: var(--spacing-sm) var(--spacing-xl);
+        font-family: var(--font-family);
+        font-size: 1rem;
+        font-weight: 600;
+        text-decoration: none;
+        text-align: center;
+        border: 2px solid var(--accent-cyan);
+        border-radius: var(--radius-lg);
+        background: var(--accent-cyan);
+        color: var(--primary-bg);
+        cursor: pointer;
+        transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .btn-generate:hover {
+        background: var(--accent-teal);
+        border-color: var(--accent-teal);
+        color: var(--primary-bg);
+        box-shadow: 0 0 20px rgba(0, 203, 255, 0.4);
+      }
+
+      .btn-generate:active {
+        transform: scale(0.98);
+      }
+
+      /* Status display */
+      .status {
+        margin-top: var(--spacing-md);
+        padding: var(--spacing-sm) var(--spacing-md);
+        border-radius: var(--radius-sm);
+        display: none;
+        font-size: 0.95rem;
+      }
+
+      .status.success {
+        background: rgba(0, 203, 255, 0.1);
+        border: 1px solid rgba(0, 203, 255, 0.3);
+        color: var(--accent-cyan);
+        display: block;
+      }
+
+      .status.error {
+        background: rgba(255, 100, 100, 0.1);
+        border: 1px solid rgba(255, 100, 100, 0.3);
+        color: #ff8a8a;
+        display: block;
+      }
+
+      .status strong { font-weight: 700; }
+      .status small { display: block; margin-top: 4px; opacity: 0.8; }
+
+      /* JSON editor */
+      .editor-label {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        margin-bottom: 0.5rem;
+      }
+
+      .editor-label h2 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--text-white);
+        margin: 0;
+      }
+
+      .btn-reset {
+        background: none;
+        border: none;
+        color: var(--accent-cyan);
+        font-family: var(--font-family);
+        font-size: 0.875rem;
+        cursor: pointer;
+        padding: 0;
+        transition: color 0.2s ease;
+      }
+
+      .btn-reset:hover {
+        color: var(--accent-teal);
+      }
+
+      .json-editor {
+        width: 100%;
+        min-height: 420px;
+        padding: var(--spacing-sm);
+        font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', Consolas, monospace;
+        font-size: 0.8rem;
+        line-height: 1.5;
+        color: var(--text-light);
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid var(--border-light);
+        border-radius: var(--radius-sm);
+        resize: vertical;
+        tab-size: 2;
+        outline: none;
+        transition: border-color 0.2s ease;
+      }
+
+      .json-editor:focus {
+        border-color: var(--accent-cyan);
+      }
+
+      .json-editor.invalid {
+        border-color: rgba(255, 100, 100, 0.5);
+      }
+
+      @media (max-width: 767px) {
+        .container {
+          padding: 0 var(--spacing-md);
+        }
+
+        .article-title {
+          font-size: 1.75rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <a href="index.html" class="back-link">&larr; Back to home</a>
+
+      <header class="article-header">
+        <h1 class="article-title">Resume Generator</h1>
+        <p class="article-meta">Auto-fits your resume to one page using progressive layout shrinking</p>
+      </header>
+
+      <div class="article-content">
+        <p>Edit the JSON below to customize the resume content, then hit generate. The auto-shrink engine will find the best layout that fits on one page.</p>
+
+        <div class="editor-label">
+          <h2>Resume data</h2>
+          <button class="btn-reset" onclick="resetEditor()">Reset to default</button>
+        </div>
+        <textarea id="json-editor" class="json-editor" spellcheck="false"></textarea>
+
+        <div style="margin-top: var(--spacing-md);">
+          <button class="btn-generate" onclick="generatePDF()">Generate PDF Resume</button>
+        </div>
+
+        <div id="status" class="status"></div>
+
+        <h2>How it works</h2>
+        <p>The generator uses a binary search across combinations of margins, line height, and font size — ordered from most spacious to tightest — to find the most spacious layout that fits on a single page. The shrink order is weighted so less-visible parameters (margins) tighten before more noticeable ones (font size).</p>
+      </div>
+    </div>
+
+    <script>
+        const BASELINE_FONTS = {
+            name: 20, contact: 9, summary: 9, sectionHeader: 11,
+            company: 10, jobTitle: 10, jobDetails: 9, bullets: 9, skills: 9
+        };
+
+        const PARAM_AXES = {
+            margins: [
+                { value: [45,35,45,35], label: 'spacious' },
+                { value: [40,30,40,30], label: 'normal' },
+                { value: [35,25,35,25], label: 'tight' },
+            ],
+            lineHeight: [
+                { bullets: 1.2, summary: 1.2, label: 'spacious' },
+                { bullets: 1.1, summary: 1.15, label: 'normal' },
+                { bullets: 1.0, summary: 1.0, label: 'tight' },
+            ],
+            fontSize: [
+                { offset: 0.5, label: 'spacious' },
+                { offset: 0, label: 'normal' },
+                { offset: -0.5, label: 'tight' },
+            ],
+        };
+
+        const AXIS_WEIGHTS = { margins: 0.5, lineHeight: 0.75, fontSize: 1.25 };
+
+        function buildShrinkLevels() {
+            const combos = [];
+            const axes = PARAM_AXES;
+
+            for (let mi = 0; mi < axes.margins.length; mi++) {
+                for (let li = 0; li < axes.lineHeight.length; li++) {
+                    for (let fi = 0; fi < axes.fontSize.length; fi++) {
+                        const score = mi * AXIS_WEIGHTS.margins
+                                    + li * AXIS_WEIGHTS.lineHeight
+                                    + fi * AXIS_WEIGHTS.fontSize;
+                        combos.push({
+                            margins: axes.margins[mi].value,
+                            bulletsLineHeight: axes.lineHeight[li].bullets,
+                            summaryLineHeight: axes.lineHeight[li].summary,
+                            fsOffset: axes.fontSize[fi].offset,
+                            label: 'Margins: ' + axes.margins[mi].label
+                                 + ' | Line height: ' + axes.lineHeight[li].label
+                                 + ' | Font: ' + axes.fontSize[fi].label,
+                            score: score,
+                            tiebreak: mi * 9 + li * 3 + fi,
+                        });
+                    }
+                }
+            }
+
+            combos.sort((a, b) => a.score - b.score || a.tiebreak - b.tiebreak);
+
+            const pruned = [combos[0]];
+            for (let i = 1; i < combos.length; i++) {
+                if (combos[i].score - pruned[pruned.length - 1].score >= 0.1) {
+                    pruned.push(combos[i]);
+                }
+            }
+            const tightest = combos[combos.length - 1];
+            if (pruned[pruned.length - 1] !== tightest) {
+                pruned.push(tightest);
+            }
+
+            return pruned;
+        }
+
+        const SHRINK_LEVELS = buildShrinkLevels();
+
+        let defaultJson = '';
+
+        async function initEditor() {
+            try {
+                const response = await fetch('resume-data.json?t=' + new Date().getTime());
+                if (!response.ok) throw new Error('Failed to load resume data');
+                const data = await response.json();
+                defaultJson = JSON.stringify(data, null, 2);
+                document.getElementById('json-editor').value = defaultJson;
+            } catch (error) {
+                console.error('Error loading resume data:', error);
+                document.getElementById('json-editor').value = '{\n  "error": "Could not load resume-data.json"\n}';
+            }
+        }
+
+        function resetEditor() {
+            document.getElementById('json-editor').value = defaultJson;
+            document.getElementById('json-editor').classList.remove('invalid');
+            document.getElementById('status').className = 'status';
+        }
+
+        function loadResumeData() {
+            const editor = document.getElementById('json-editor');
+            try {
+                const data = JSON.parse(editor.value);
+                editor.classList.remove('invalid');
+                return data;
+            } catch (error) {
+                editor.classList.add('invalid');
+                showStatus('Invalid JSON: ' + error.message, 'error');
+                return null;
+            }
+        }
+
+        initEditor();
+
+        function buildDocumentDefinition(data, level) {
+            const content = [];
+
+            content.push({
+                text: data.header.name,
+                style: 'name',
+                margin: [0, 0, 0, 5]
+            });
+
+            const contactParts = [];
+
+            if (data.header.contact.linkedin) {
+                contactParts.push({
+                    text: 'LinkedIn',
+                    link: data.header.contact.linkedin,
+                    color: '#0066cc'
+                });
+            }
+
+            if (data.header.contact.website) {
+                if (contactParts.length > 0) contactParts.push(' | ');
+                contactParts.push({
+                    text: 'TrentRogers.com',
+                    link: data.header.contact.website,
+                    color: '#0066cc'
+                });
+            }
+
+            if (data.header.contact.github) {
+                if (contactParts.length > 0) contactParts.push(' | ');
+                contactParts.push({
+                    text: 'GitHub',
+                    link: data.header.contact.github,
+                    color: '#0066cc'
+                });
+            }
+
+            content.push({
+                text: contactParts,
+                style: 'contact',
+                margin: [0, 0, 0, 10]
+            });
+
+            content.push({
+                text: data.header.summary,
+                style: 'summary',
+                margin: [0, 0, 0, 7]
+            });
+
+            content.push({
+                text: 'EDUCATION',
+                style: 'sectionHeader',
+                margin: [0, 5, 0, 3]
+            });
+
+            data.education.forEach((edu, index) => {
+                let degreeLine = edu.degree;
+                if (edu.status) {
+                    degreeLine += ` (${edu.status})`;
+                }
+
+                content.push({
+                    text: degreeLine,
+                    style: 'jobTitle',
+                    margin: [0, index > 0 ? 2 : 0, 0, 0]
+                });
+
+                const institutionParts = [];
+                if (edu.institution) {
+                    institutionParts.push({ text: edu.institution, italics: true });
+                    institutionParts.push({ text: ` | ${edu.dates}`, italics: true });
+                } else {
+                    institutionParts.push({ text: edu.dates, italics: true });
+                }
+                if (edu.gpa) {
+                    institutionParts.push({ text: ` | GPA: ${edu.gpa}`, italics: true });
+                }
+
+                content.push({
+                    text: institutionParts,
+                    style: 'jobDetails',
+                    margin: [0, 0, 0, 0]
+                });
+
+                if (edu.details && edu.details.length > 0) {
+                    content.push({
+                        ul: edu.details,
+                        margin: [0, 0, 0, 0],
+                        style: 'bullets'
+                    });
+                }
+            });
+
+            if (data.selectedPrograms && data.selectedPrograms.length > 0) {
+                content.push({
+                    text: 'SELECTED PROGRAMS',
+                    style: 'sectionHeader',
+                    margin: [0, 8, 0, 3]
+                });
+
+                data.selectedPrograms.forEach((prog, index) => {
+                    content.push({
+                        text: prog.degree,
+                        style: 'jobTitle',
+                        margin: [0, index > 0 ? 2 : 0, 0, 0]
+                    });
+
+                    const progParts = [];
+                    if (prog.institution) {
+                        progParts.push({ text: prog.institution, italics: true });
+                        progParts.push({ text: ` | ${prog.dates}`, italics: true });
+                    } else {
+                        progParts.push({ text: prog.dates, italics: true });
+                    }
+
+                    content.push({
+                        text: progParts,
+                        style: 'jobDetails',
+                        margin: [0, 0, 0, 0]
+                    });
+                });
+            }
+
+            content.push({
+                text: 'SKILLS',
+                style: 'sectionHeader',
+                margin: [0, 10, 0, 3]
+            });
+
+            content.push({
+                text: data.skills.join(' | '),
+                style: 'skills',
+                margin: [0, 0, 0, 0]
+            });
+
+            content.push({
+                text: 'EXPERIENCE',
+                style: 'sectionHeader',
+                margin: [0, 10, 0, 3]
+            });
+
+            data.experience.forEach((job, index) => {
+                content.push({
+                    text: job.company,
+                    style: 'company',
+                    margin: [0, index > 0 ? 6 : 0, 0, 1]
+                });
+
+                const roles = job.roles || [{ title: job.title, dates: job.dates, bullets: job.bullets }];
+
+                roles.forEach((role, roleIndex) => {
+                    if (role.title) {
+                        content.push({
+                            text: [
+                                { text: role.title, italics: true },
+                                { text: ` | ${role.dates}`, italics: true }
+                            ],
+                            style: 'jobDetails',
+                            margin: [0, roleIndex > 0 ? 4 : 0, 0, 2]
+                        });
+                    } else {
+                        content.push({
+                            text: role.dates,
+                            style: 'jobDetails',
+                            italics: true,
+                            margin: [0, roleIndex > 0 ? 4 : 0, 0, 2]
+                        });
+                    }
+
+                    if (role.bullets && role.bullets.length > 0) {
+                        content.push({
+                            ul: role.bullets.map(bullet => bullet.text),
+                            margin: [0, 0, 0, 0],
+                            style: 'bullets'
+                        });
+                    }
+                });
+            });
+
+            const fs = (key) => BASELINE_FONTS[key] + level.fsOffset;
+
+            return {
+                content: content,
+                styles: {
+                    name: {
+                        fontSize: fs('name'),
+                        bold: true,
+                        alignment: 'center'
+                    },
+                    contact: {
+                        fontSize: fs('contact'),
+                        alignment: 'center',
+                        color: '#333'
+                    },
+                    summary: {
+                        fontSize: fs('summary'),
+                        alignment: 'justify',
+                        lineHeight: level.summaryLineHeight
+                    },
+                    sectionHeader: {
+                        fontSize: fs('sectionHeader'),
+                        bold: true,
+                        color: '#000'
+                    },
+                    company: {
+                        fontSize: fs('company'),
+                        bold: true
+                    },
+                    jobTitle: {
+                        fontSize: fs('jobTitle'),
+                        bold: true
+                    },
+                    jobDetails: {
+                        fontSize: fs('jobDetails'),
+                        color: '#333'
+                    },
+                    bullets: {
+                        fontSize: fs('bullets'),
+                        lineHeight: level.bulletsLineHeight
+                    },
+                    skills: {
+                        fontSize: fs('skills')
+                    }
+                },
+                defaultStyle: {
+                    font: 'Roboto'
+                },
+                pageSize: 'LETTER',
+                pageMargins: level.margins
+            };
+        }
+
+        function countPages(docDefinition) {
+            // Use getStream() without callback to skip expensive buffer serialization.
+            // This runs layout + render but not the final binary generation.
+            const doc = pdfMake.createPdf(docDefinition).getStream();
+            return doc._pdfMakePages.length;
+        }
+
+        function showFitStatus(level, levelIndex, success) {
+            const statusDiv = document.getElementById('status');
+            if (success) {
+                statusDiv.innerHTML =
+                    '<strong>\u2713 Fits on one page</strong>' +
+                    '<small>' + level.label +
+                    ' (level ' + (levelIndex + 1) + '/' + SHRINK_LEVELS.length + ')</small>';
+                statusDiv.className = 'status success';
+            } else {
+                statusDiv.innerHTML =
+                    '<strong>\u26A0 Could not fit on one page at minimum settings.</strong>' +
+                    '<small>Consider removing content.</small>';
+                statusDiv.className = 'status error';
+            }
+        }
+
+        function generatePDF() {
+            const data = loadResumeData();
+            if (!data) return;
+
+            showStatus('Finding best fit...', 'success');
+
+            try {
+                // Binary search for the most spacious level that fits on 1 page.
+                // SHRINK_LEVELS is sorted from most spacious (index 0) to tightest.
+                let lo = 0;
+                let hi = SHRINK_LEVELS.length - 1;
+                let chosenIndex = -1;
+
+                while (lo <= hi) {
+                    const mid = Math.floor((lo + hi) / 2);
+                    const docDef = buildDocumentDefinition(data, SHRINK_LEVELS[mid]);
+                    const pages = countPages(docDef);
+                    if (pages <= 1) {
+                        chosenIndex = mid;
+                        hi = mid - 1; // try more spacious
+                    } else {
+                        lo = mid + 1; // need tighter
+                    }
+                }
+
+                let chosenDoc;
+                if (chosenIndex === -1) {
+                    // None fit — use tightest level anyway
+                    chosenIndex = SHRINK_LEVELS.length - 1;
+                    chosenDoc = buildDocumentDefinition(data, SHRINK_LEVELS[chosenIndex]);
+                    showFitStatus(SHRINK_LEVELS[chosenIndex], chosenIndex, false);
+                } else {
+                    chosenDoc = buildDocumentDefinition(data, SHRINK_LEVELS[chosenIndex]);
+                    showFitStatus(SHRINK_LEVELS[chosenIndex], chosenIndex, true);
+                }
+
+                // Only this final call generates the full PDF binary
+                pdfMake.createPdf(chosenDoc).download('Trent_Rogers_Resume.pdf');
+            } catch (error) {
+                console.error('Error generating PDF:', error);
+                showStatus('Error generating PDF: ' + error.message, 'error');
+            }
+        }
+
+        function showStatus(message, type) {
+            const statusDiv = document.getElementById('status');
+            statusDiv.textContent = message;
+            statusDiv.className = 'status ' + type;
+        }
+    </script>
+  </body>
+</html>
