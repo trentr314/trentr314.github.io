@@ -6,7 +6,7 @@
       "website": "https://trentrogers.com",
       "github": "https://github.com/trentr314"
     },
-    "summary": "Software engineer with a dual background in Cognitive Science (AI/neuroscience concentrations) and Computer Science, and 2+ years of experience developing, debugging, and modernizing robust C++ and Python systems for high-stakes environments (FAA). Experience with automation, data-driven problem-solving, and rapid adaptation to complex technical systems. BlueDot Impact alumni (AGI Strategy) and CRS S-Risk Introductory Fellow. Deeply interested in understanding how complex/intelligent information systems work internally."
+    "summary": "Software engineer with a dual background in Cognitive Science (neuroscience/AI concentrations) and Computer Science, and 2+ years building, debugging, and modernizing robust C++ and Python systems in a demanding production environment (FAA). Strengths in data pipelines, automation, and turning messy, multi-source real-world data into reliable analysis. Drawn to research-adjacent software engineering — building the tools and data infrastructure that let scientists and researchers do their work."
   },
   "education": [
     {
@@ -38,18 +38,6 @@
       "institution": "Oklahoma City Community College",
       "dates": "2017",
       "details": []
-    }
-  ],
-  "selectedPrograms": [
-    {
-      "degree": "S-Risk Introductory Fellow",
-      "institution": "Center for Reducing Suffering",
-      "dates": "February–March 2026"
-    },
-    {
-      "degree": "BlueDot Impact — AGI Strategy",
-      "institution": "",
-      "dates": "January–February 2026"
     }
   ],
   "skills": [
